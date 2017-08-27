@@ -90,6 +90,7 @@ class DrawerContainerController: UIViewController {
         var offsetConstraint: NSLayoutConstraint
         if showing {
             addChildViewController(drawerViewController)
+            drawerViewController.beginAppearanceTransition(true, animated: true)
             drawerView.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(drawerView)
             
@@ -107,6 +108,7 @@ class DrawerContainerController: UIViewController {
             offsetConstraint = trackingOffsetConstraint
             
             drawerViewController.willMove(toParentViewController: nil)
+            drawerViewController.beginAppearanceTransition(false, animated: true)
         }
         
         // start animation
@@ -127,7 +129,24 @@ class DrawerContainerController: UIViewController {
                     self.drawerState = .hidden
                     self.drawerViewOffsetConstraint = nil
                 }
+                self.drawerViewController.endAppearanceTransition()
             }
         )
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if case .transitioning = drawerState {
+            print("container appearance changed while drawer is transitioning, watch out")
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if case .transitioning = drawerState {
+            print("container appearance changed while drawer is transitioning, watch out")
+        }
     }
 }

@@ -20,5 +20,15 @@ class MainViewController: UIViewController {
             rootVC.toogleDrawer()
         }
     }
+    
+    @IBAction func presentChild() {
+        let newVC = UIViewController()
+        newVC.view.backgroundColor = .white
+        present(newVC, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                self.dismiss(animated: true, completion: nil)
+            })
+        }
+    }
 }
 
